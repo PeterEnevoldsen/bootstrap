@@ -78,6 +78,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
     setIsOpen = angular.noop,
     toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop,
     appendToBody = false,
+    noFocus = false,
     appendTo = null,
     keynavEnabled = false,
     selectedOption = null,
@@ -181,7 +182,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
   };
 
   scope.focusToggleElement = function() {
-    if (self.toggleElement) {
+    if ( self.toggleElement && !self.ignoreFocus) {
       self.toggleElement[0].focus();
     }
   };
@@ -319,6 +320,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
       element.addClass('dropdown-toggle');
 
       dropdownCtrl.toggleElement = element;
+      dropdownCtrl.ignoreFocus = angular.isDefined(attrs.tabindex) && parseInt(attrs.tabindex, 10) === -1;
 
       var toggleDropdown = function(event) {
         event.preventDefault();
